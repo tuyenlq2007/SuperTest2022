@@ -1,6 +1,6 @@
 const request = require("supertest")("https://airportgap.dev-tester.com/api");
 const expect = require("chai").expect;
-
+const AIRPORT_GAP_TOKEN = 'pGfCdXtTPwDKriBsatXHuC3x';
 
 describe("POST /favorites", function () {
   it("requires authentication", async function () {
@@ -16,7 +16,7 @@ describe("POST /favorites", function () {
   // Check that a user can create a favorite.
   const postResponse = await request
     .post("/favorites")
-    .set("Authorization", `Bearer token=${process.env.AIRPORT_GAP_TOKEN}`)
+    .set("Authorization", `Bearer token=${AIRPORT_GAP_TOKEN}`)
     .send({
       airport_id: "JFK",
       note: "My usual layover when visiting family",
@@ -31,7 +31,7 @@ describe("POST /favorites", function () {
   // Check that a user can update the note of the created favorite.
   const putResponse = await request
     .put(`/favorites/${favoriteId}`)
-    .set("Authorization", `Bearer token=${process.env.AIRPORT_GAP_TOKEN}`)
+    .set("Authorization", `Bearer token=${AIRPORT_GAP_TOKEN}`)
     .send({
       note: "My usual layover when visiting family and friends",
     });
@@ -42,14 +42,14 @@ describe("POST /favorites", function () {
   // Check that a user can delete the created favorite.
   const deleteResponse = await request
     .delete(`/favorites/${favoriteId}`)
-    .set("Authorization", `Bearer token=${process.env.AIRPORT_GAP_TOKEN}`);
+    .set("Authorization", `Bearer token=${AIRPORT_GAP_TOKEN}`);
 
   expect(deleteResponse.status).to.eql(204);
 
   // Verify that the record was deleted.
   const getResponse = await request
     .get(`/favorites/${favoriteId}`)
-    .set("Authorization", `Bearer token=${process.env.AIRPORT_GAP_TOKEN}`);
+    .set("Authorization", `Bearer token=${AIRPORT_GAP_TOKEN}`);
 
   expect(getResponse.status).to.eql(404);
 });
